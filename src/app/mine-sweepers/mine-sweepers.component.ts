@@ -105,8 +105,8 @@ export class MineSweepersComponent implements OnInit {
     this.revealRevolved(block);
     // console.log('is able to open ', this.block.state !== state.open)
 
-    console.log('block state:',block.state,'state open: ',this.block_state.open)
-    console.log(block._nearby_mines)
+    // console.log('block state:',block.state,'state open: ',this.block_state.open)
+    // console.log(block._nearby_mines)
     block.state = this.block_state.open
     //first check - the user did not flag this block as a potential mined block, and this block is still active
     if (this.block.state !== state.open) {
@@ -129,13 +129,6 @@ export class MineSweepersComponent implements OnInit {
     //second - case it is a mine, a message will be sent. if it is a number - it will be shown.
     //         and if it is undefined - recursion to reveal the revolved blocks.
     this.grid.locations[Number.parseInt(id.slice(0, 2))][Number.parseInt(id.slice(2, 4))].clicked();
-  }
-
-  checkValidCoords(x, y) {
-    return (this.checkValidCoord(x) && this.checkValidCoord(y))
-  }
-  checkValidCoord(coord) {
-    return (coord > 0 && coord < this.grid.locations.length)
   }
   //return arr[x][0] < 0 || arr[x][1] < 0 || arr[x][0] >= this.grid.locations.length || arr[x][1] >= this.grid.locations.length
 
