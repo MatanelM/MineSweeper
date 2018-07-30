@@ -1,0 +1,123 @@
+.hor ,.ver{
+    margin: 0px;
+}
+
+.hor{
+  /*..*/
+}
+
+.ver{
+    float:left;
+}
+.bordered-out{
+
+  width: 656px;
+  height: 656px;
+  border: 10px solid black;
+  border-top: 10px solid rgb(218, 218, 218);
+  border-left: 10px solid rgb(97, 97, 97);
+}
+.bordered-in{
+  width: 640px;
+  height: 640px;
+  border: 10px solid black;
+  border-bottom: 10px solid rgb(218, 218, 218);
+  border-right: 10px solid rgb(97, 97, 97);
+}
+.block{
+    margin: 0px;
+    text-decoration: none;
+    background-color: unset;
+    border: unset;
+
+    height:30px;
+    width:30px;
+    border: 1px black solid;
+    border-top: 1px solid rgb(218, 218, 218);
+    border-left: 1px solid rgb(97, 97, 97);
+    text-rendering: auto;
+    text-align: center;
+}
+
+.block:active{
+    border: 1px solid black;
+    border-bottom: 1px solid rgb(218, 218, 218);
+    border-right: 1px solid rgb(145, 145, 145);
+}
+
+.flagged{
+    margin: 0px;
+    text-decoration: none;
+    background-color: unset;
+    border: unset;
+
+    background-image: url("https://i.imgur.com/vnZ0mIf.png") ;
+    background-size: contain;
+
+    height:30px;
+    width:30px;
+    border: 1px black solid;
+    border-top: 1px solid rgb(218, 218, 218);
+    border-left: 1px solid rgb(97, 97, 97);
+}
+.flagged:active{
+    background-color: red;
+}
+
+
+
+@media only screen and (min-width : 720px){
+
+    .block{
+        padding:0px;
+
+        width:70px;
+        height:70px;
+        margin:0px;
+
+        border: 5px solid black;
+        border-top: 5px solid rgb(218, 218, 218);
+        border-left: 5px solid rgb(97, 97, 97);
+
+
+    }
+
+    .block:active{
+        border: 5px solid black;
+        border-bottom: 5px solid rgb(218, 218, 218);
+        border-right: 5px solid rgb(145, 145, 145);
+    }
+    .flagged{
+        padding:0px;
+
+        width:70px;
+        height:70px;
+        margin:0px;
+
+        border: 5px solid black;
+        border-top: 5px solid rgb(218, 218, 218);
+        border-left: 5px solid rgb(97, 97, 97);
+
+
+    }
+    .flagged:active{
+        color: red;
+    }
+    .unframed{
+      border:1px dotted black;
+
+      width:78px;
+      height:78px;
+      margin:0px;
+    }
+    .unframed:active{
+        border:1px dotted black;
+    }
+
+    .question{
+      background-image: url("https://i.imgur.com/Kypt2fJ.png");
+      background-size: contain;
+    }
+
+
+}
