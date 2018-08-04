@@ -19,11 +19,12 @@
   <div class="bordered-in">
     <div id="" class="ver" *ngFor="let i of grid.locations" >
       <div id="" class="hor" *ngFor="let block of i">
-        <div [attr.id]="block.id" class="block" [class]="block.state === block_state.unset ? 'block' : 'block unframed'" 
+        <div [attr.id]="block.id" class="block" 
+        [class]="block.state !== block_state.open  ? 'block' : 'block unframed'" 
         [ngStyle]="{ 'background-color' : block.color }" (click)="clicked($event,block)"  
         (mousedown)="FlagUsed($event)" >
           <span *ngIf="block.state == block_state.open && block._nearby_mines != 0">{{block._nearby_mines}}</span>
-         
+
         </div>
       </div>
     </div>

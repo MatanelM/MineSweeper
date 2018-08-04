@@ -10,7 +10,7 @@ export class Block extends Location {
 
   private _isMined: boolean = false;
 
-  public _nearby_mines: number = 0;
+  private _nearby_mines: number = 0;
 
   constructor(x: number, y: number) {
     super(x, y);

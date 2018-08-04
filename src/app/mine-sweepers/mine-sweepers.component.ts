@@ -16,7 +16,8 @@ import { Grid } from '../common/Grid';
   styleUrls: ['./mine-sweepers.component.css']
 })
 export class MineSweepersComponent implements OnInit {
-  private block_state = state;
+
+  public block_state = state;
   private imgs = {
     flag: "https://i.imgur.com/vnZ0mIf.png",
     question: "https://i.imgur.com/Kypt2fJ.png"
@@ -28,7 +29,7 @@ export class MineSweepersComponent implements OnInit {
   private level: string = this.game_level._level.toString();
   private flags: Flags = new Flags(this.game_level);
   //this block is temp!
-  private block: Block;
+  public block: Block;
 
 
   constructor() {
@@ -42,142 +43,102 @@ export class MineSweepersComponent implements OnInit {
   }
 
   FlagUsed(event) {
-    //create new temporary block with the coordinated spot
-    //come back later
-    this.block = new Block(
-      Number.parseInt(event.target.id.slice(0, 2)),
-      Number.parseInt(event.target.id.slice(2, 4))
-    )
-    var block_id_array = this.block.idToNums(this.block.id);
-
 
     var x = Number.parseInt(event.target.id.slice(0, 2));
     var y = Number.parseInt(event.target.id.slice(2, 4));
 
+    this.block = this.grid.getBlock(x,y);
+
     //check for the activity of this block
-    if (this.grid.getBlock(block_id_array[0], block_id_array[1]).state == state.open) {
+    if (this.block.state == state.open) {
       return;
     }
-
 
     if (event.button == 2) {
 
       //If statements for "flagged" and "question"
-      if (this.grid.locations[x][y].isFlagged) {
+      if (this.block.state == state.flagged) {
         this.flags.FlagReturned();
+        this.block.state = state.question;
         event.target.setAttribute("class", "block question")
         return;
       }
-      if (event.target.className == "block question") {
-        this.grid.locations[x][y].isFlagged = false;
+      if (this.block.state == state.question) {
+        this.block.state = state.unset;
         event.target.setAttribute("class", "block");
         return;
       }
-
       if (this.flags.amount == 0) {
         //return a message to the user if he had no flags left
         alert("no more flags");
         return;
       }
       this.flags.FlagUsed();
-      this.grid.locations[x][y].isFlagged = true;
+      this.block.state = state.flagged;
       event.target.setAttribute("class", "flagged");
 
     }
 
   }
+  lostGame(){
+    //reveal all mines
+    for (let i = 0; i < this.grid.locations.length ; i++) {
+      for (let j = 0; j <  this.grid.locations.length; j++) {
+        if(this.grid.locations[i][j].isMined){
+          this.grid.locations[i][j].clicked();
+        }
+      }
+    }
+    setTimeout(() => {alert("oh what a bum. u lose")},100);
+    //this.grid = new Grid(this.game_level);
+  }
+  revealMines(){
+
+  }
+  revealBlocksNear(block : Block){
+
+    let arr = [];
+
+    for (let i = block.horizontal - 1 ; i <= block.horizontal + 1 ; i++) {
+      for (let j = block.vertical - 1 ; j <=  block.vertical + 1 ; j++) {
+        if(!this.grid.checkValidCoords(i,j)) continue;
+        if(block.horizontal == i && block.vertical == j) continue; 
+        if(this.revealValid(i,j)) continue;        
+        this.grid.locations[i][j].clicked();
+        if(this.grid.locations[i][j].nearbyMines == 0 ) arr.push(this.grid.locations[i][j]);
+      }
+    }
+    
+    for (let i = 0; i < arr.length; i++) {
+      this.revealBlocksNear(arr[i])      
+    }
+
+  }
+
+  revealValid(i,j){
+    return  this.grid.locations[i][j].state == state.flagged
+      || this.grid.locations[i][j].state == state.question
+      || this.grid.locations[i][j].state == state.open;
+  }
+  clicked(ev, block) {
+
+    //first check - the user did not flag this block as a potential mined block, and this block is still active
+    if ( block.state !== state.open && block.state !== state.flagged && block.state !== state.question) {
+  
+      block.clicked();
+      if ( block.isMined ){
+        this.lostGame();  
+      }else if(block.nearbyMines == 0){
+        this.revealBlocksNear(block);
+      }
+    }  
+  }
 
   //tests
   testLocation(event) {
-
-    //this.grid.printGrid();
-    //console.log(this.imgs)
-    // if (this.grid.getBlock(1, 0).item.number) {
-    //   console.log("number here")
-    // } else {
-    //   console.log("no number here")
-    // }
-    console.log(this.block_state)
-  }
-
-
-  clicked(ev, block) {
-    this.revealRevolved(block);
-    // console.log('is able to open ', this.block.state !== state.open)
-
-    // console.log('block state:',block.state,'state open: ',this.block_state.open)
-    // console.log(block._nearby_mines)
-    block.state = this.block_state.open
-    //first check - the user did not flag this block as a potential mined block, and this block is still active
-    if (this.block.state !== state.open) {
-    }
-
-    //check the "item" underneatch the block. which is one of 3 : Mine, Number, or nothing.
-    if (block._nearby_mines == 0 ) {
-      //in this case - reveal all the mine around
-      this.revealRevolved(block);
-      console.log("no mines around")
-    } else if (block.item.isMine) {
-      console.log("Mine! next time champ!")
-    } 
-     
-    //  console.log(block.item.number,"mines ahead of you");
-    //remove the styling by switching the class by switching the value of the block isActive to false
-    var id = ev.target.id;
-    this.grid.locations[Number.parseInt(id.slice(0, 2))][Number.parseInt(id.slice(2, 4))].clicked();
-    //several things might happen here. first - the user see what lying under the block.
-    //second - case it is a mine, a message will be sent. if it is a number - it will be shown.
-    //         and if it is undefined - recursion to reveal the revolved blocks.
-    this.grid.locations[Number.parseInt(id.slice(0, 2))][Number.parseInt(id.slice(2, 4))].clicked();
-  }
-  //return arr[x][0] < 0 || arr[x][1] < 0 || arr[x][0] >= this.grid.locations.length || arr[x][1] >= this.grid.locations.length
-
-  revealRevolved(block: Block) {
-    
-
-
-    //set indications i,j
-    // console.log(this.checkValidCoords(block.horizontal,block.vertical))
-    let i = block.horizontal;
-    let j = block.vertical;
-
-    //1.check for round blocks for valid 
-
-    //
-
-    //The next several methods are used to create useful recursion.
-    //1.create an array of all possible blocks around the blocks
-    var arr: any = [[i - 1, j], [i - 1, j + 1], [i, j + 1], [i + 1, j + 1], [i + 1, j], [i + 1, j - 1], [i, j - 1], [i - 1, j - 1]];
-    //2.filter the array, if the block surround unrevealable block - release it
-    //3.go through the array, and commit reveal in any case.
-    //4.if the block is numbered - ok, if it is containing nothing - recourse.
-    for (let x = 0; x < arr.length; x++) {
-      // task 2 - 1. check for technical issues
-      if (arr[x][0] < 0 || arr[x][1] < 0 || arr[x][0] >= this.grid.locations.length || arr[x][1] >= this.grid.locations.length) {
-        continue;
-        //          2. check for logic issues
-      }
-      // else if(!this.checkValidBlock(this.grid.getBlock(arr[x][0],arr[x][1]))){
-      //     continue;
-      // }
-
-      // task 3 - reveal the block
-      this.grid.locations[arr[x][0]][arr[x][1]].clicked();
-      // task 4 - recourse
-      if (typeof this.grid.getBlock(arr[x][0], arr[x][1]).item == 'undefined') {
-        this.revealRevolved(this.grid.locations[arr[x][0]][arr[x][1]]);
-
-      }
-    }
-
-  }
-
-  checkValidBlock(block: Block): boolean {
-    if (typeof block == 'undefined') {
-      return false;
-    }
-
-    if (block.isFlagged || block.state != state.open) return false;
+  
+    this.grid.printGrid();
+  
   }
 }
 
