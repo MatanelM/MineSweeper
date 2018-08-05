@@ -32,9 +32,9 @@ export class MineSweepersComponent implements OnInit {
 
   constructor() {
     switch (this.level) {
-      case '0': this.level = 'Easy';
-      case '1': this.level = 'Medium';
-      case '2': this.level = 'Hard';
+      case '0': this.level = 'Easy';break;
+      case '1': this.level = 'Medium';break;
+      case '2': this.level = 'Hard';break;
     }
   }
 
@@ -43,14 +43,12 @@ export class MineSweepersComponent implements OnInit {
   }
 
   FlagUsed(event,block) {
-
     //check for the activity of this block
     if (block.state == state.open) {
       return;
     }
 
     if (event.button == 2) {
-
       //If statements for "flagged" and "question"
       if (block.state == state.flagged) {
         this.flags.FlagReturned();
@@ -71,10 +69,9 @@ export class MineSweepersComponent implements OnInit {
       this.flags.FlagUsed();
       block.state = state.flagged;
       event.target.setAttribute("class", "flagged");
-
     }
-
   }
+
   private game_over = false;
   private game_over_message = this.game_over;
   lostGame(){
@@ -91,7 +88,6 @@ export class MineSweepersComponent implements OnInit {
         }
       }
     }
-    //this.grid = new Grid(this.game_level);
   }
 
   revealBlocksNear(block : Block){
@@ -137,37 +133,12 @@ export class MineSweepersComponent implements OnInit {
   closeMessageButton(){
     this.game_over_message = false;
   }
-  startNewGame(){
+  startNewGame(num){
     this.closeMessageButton();
     this.game_over = false;
-    this.grid = new Grid(this.game_level);
-  }
-
-
-  //tests
-  testLocation(event) {
-  
-    //this.grid.printGrid();
-
+    this.game_level._level = num;
+    this.flags = new Flags(this.game_level);
+    this.grid = new Grid(new GameLevel());
   }
 
 }
-
-/*
-//the top
-[i-1][j]
-//the top right
-[i-1][j+1]
-//the next
-[i][j+1]
-//the bottom right
-[i+1][j+1]
-//the bottom
-[i+1][j]
-//the bottom left
-[i][j-1]
-//the left
-[i][j-1]
-//the top left
-[i-1][j-1]
-*/

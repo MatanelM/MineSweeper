@@ -1,20 +1,24 @@
-<h1>
 
-  Game Sweepers!
+<div class="header">
+  <h3 class="center">
+    Level {{level}}
+  </h3>
+  <h3>
+    flags : {{flags.amount}} 
+  </h3>
+  <div class="right">
+    <button (click)="startNewGame(0)">
+      New Easy Game
+    </button>
+    <button>
+      New Medium Game
+    </button>
+    <button>
+      New Hard Game
+    </button>
+  </div>
+</div>
 
-</h1>
-
-<h3>
-
-  Level {{level}}
-
-</h3>
-
-<h3>
-
-  flags : {{flags.amount}} <button (click)= "FlagUsed()">-</button><button (click)="FlagReturned()">+</button>
-
-</h3>
 <div class="bordered-out">
   <div class="bordered-in">
     <div id="" class="ver" *ngFor="let i of grid.locations" >
@@ -31,18 +35,20 @@
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-danger" (click)="testLocation($event)">Test</button>
-
 <div id="game_over" *ngIf="game_over_message" class="game-over">
-  <button class="exit-button" (click)="closeMessageButton()">x</button>
+  <div class="message-header">
+    <span class="title">Game Over</span>
+    <button class="exit-button" (click)="closeMessageButton()">x</button>
+    
+  </div>
   <p>
-      BOoOoOM! <br><br><br>
+    <br><br>
      You stepped on a mine!
-  </p>
+    </p>
   <br><br>
 
   <div class="buttons">
     <button type="button" (click)="closeMessageButton()">Ok</button>
-    <button type="button" (click)="startNewGame()">New Game</button>
+    <button type="button" (click)="startNewGame(0)">New Game</button>
   </div>
 </div>

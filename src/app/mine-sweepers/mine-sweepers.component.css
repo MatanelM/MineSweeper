@@ -1,7 +1,8 @@
+
+
 .hor ,.ver{
     margin: 0px;
 }
-
 .hor{
   /*..*/
 }
@@ -9,8 +10,13 @@
 .ver{
     float:left;
 }
+.center{
+    text-align: center;
+}
+h3{
+    font-family:cursive;
+}
 .bordered-out{
-
   width: 656px;
   height: 656px;
   border: 10px solid black;
@@ -24,6 +30,7 @@
   border-bottom: 10px solid rgb(218, 218, 218);
   border-right: 10px solid rgb(97, 97, 97);
 }
+
 .block{
     background-color: gray;
     margin: 0px;
@@ -123,8 +130,6 @@
         position: relative;
         top: 10px;
 
-        
-
         width:50px;
         height:50px;
     }
@@ -154,6 +159,9 @@
     left: 600px;
     width: 252px;
     height: 200px;
+
+    box-shadow: 0px 0px 3px 0px black;
+
 }
 
 .game-over .exit-button{
@@ -169,8 +177,8 @@
 }
 .game-over p{
     position: relative;
-    top: 20px;
-    left: 15px;
+    top: 18px;
+    left: 12px;
     text-align: center;
     font-family: cursive;
     font-size: 1em;    
@@ -188,4 +196,12 @@
     margin-left: 1px;
     margin-right: 1px;
     border: 1px solid black;
+}
+.game-over .message-header{
+    position: relative;
+    border-bottom:1px solid black;
+    background-color: rgb(48, 48, 48);
+}
+.game-over .title{
+    font-family:Arial, Helvetica, sans-serif;
 }
