@@ -19,15 +19,30 @@
   <div class="bordered-in">
     <div id="" class="ver" *ngFor="let i of grid.locations" >
       <div id="" class="hor" *ngFor="let block of i">
-        <div [attr.id]="block.id" class="block" 
+        <div [attr.id]="block.id"
         [class]="block.state !== block_state.open  ? 'block' : 'block unframed'" 
-        [ngStyle]="{ 'background-color' : block.color }" (click)="clicked($event,block)"  
-        (mousedown)="FlagUsed($event)" >
-          <span *ngIf="block.state == block_state.open && block._nearby_mines != 0">{{block._nearby_mines}}</span>
-
+        (click)="clicked($event,block)"  
+        (mousedown)="FlagUsed($event,block)" >
+          <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="numbered">{{block._nearby_mines}}</span>
+          <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" 
+          class="mined" />
         </div>
       </div>
     </div>
   </div>
 </div>
 <button type="button" class="btn btn-danger" (click)="testLocation($event)">Test</button>
+
+<div id="game_over" *ngIf="game_over_message" class="game-over">
+  <button class="exit-button" (click)="closeMessageButton()">x</button>
+  <p>
+      BOoOoOM! <br><br><br>
+     You stepped on a mine!
+  </p>
+  <br><br>
+
+  <div class="buttons">
+    <button type="button" (click)="closeMessageButton()">Ok</button>
+    <button type="button" (click)="startNewGame()">New Game</button>
+  </div>
+</div>

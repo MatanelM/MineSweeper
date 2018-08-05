@@ -20,7 +20,8 @@ export class MineSweepersComponent implements OnInit {
   public block_state = state;
   private imgs = {
     flag: "https://i.imgur.com/vnZ0mIf.png",
-    question: "https://i.imgur.com/Kypt2fJ.png"
+    question: "https://i.imgur.com/Kypt2fJ.png",
+    mine: "https://i.imgur.com/T0Kwk2T.png"
   }
 
   private game_level = new GameLevel();
@@ -28,13 +29,12 @@ export class MineSweepersComponent implements OnInit {
 
   private level: string = this.game_level._level.toString();
   private flags: Flags = new Flags(this.game_level);
-  //this block is temp!
-  public block: Block;
-
 
   constructor() {
     switch (this.level) {
       case '0': this.level = 'Easy';
+      case '1': this.level = 'Medium';
+      case '2': this.level = 'Hard';
     }
   }
 
@@ -42,29 +42,24 @@ export class MineSweepersComponent implements OnInit {
     document.oncontextmenu = () => { return false };
   }
 
-  FlagUsed(event) {
-
-    var x = Number.parseInt(event.target.id.slice(0, 2));
-    var y = Number.parseInt(event.target.id.slice(2, 4));
-
-    this.block = this.grid.getBlock(x,y);
+  FlagUsed(event,block) {
 
     //check for the activity of this block
-    if (this.block.state == state.open) {
+    if (block.state == state.open) {
       return;
     }
 
     if (event.button == 2) {
 
       //If statements for "flagged" and "question"
-      if (this.block.state == state.flagged) {
+      if (block.state == state.flagged) {
         this.flags.FlagReturned();
-        this.block.state = state.question;
+        block.state = state.question;
         event.target.setAttribute("class", "block question")
         return;
       }
-      if (this.block.state == state.question) {
-        this.block.state = state.unset;
+      if (block.state == state.question) {
+        block.state = state.unset;
         event.target.setAttribute("class", "block");
         return;
       }
@@ -74,27 +69,31 @@ export class MineSweepersComponent implements OnInit {
         return;
       }
       this.flags.FlagUsed();
-      this.block.state = state.flagged;
+      block.state = state.flagged;
       event.target.setAttribute("class", "flagged");
 
     }
 
   }
+  private game_over = false;
+  private game_over_message = this.game_over;
   lostGame(){
+
+    this.game_over = true;
+    this.game_over_message = this.game_over;
+
     //reveal all mines
     for (let i = 0; i < this.grid.locations.length ; i++) {
       for (let j = 0; j <  this.grid.locations.length; j++) {
-        if(this.grid.locations[i][j].isMined){
+        if(this.grid.locations[i][j].isMined && 
+          (this.grid.locations[i][j].state != state.flagged && this.grid.locations[i][j].state != state.question)){
           this.grid.locations[i][j].clicked();
         }
       }
     }
-    setTimeout(() => {alert("oh what a bum. u lose")},100);
     //this.grid = new Grid(this.game_level);
   }
-  revealMines(){
 
-  }
   revealBlocksNear(block : Block){
 
     let arr = [];
@@ -123,10 +122,11 @@ export class MineSweepersComponent implements OnInit {
   clicked(ev, block) {
 
     //first check - the user did not flag this block as a potential mined block, and this block is still active
-    if ( block.state !== state.open && block.state !== state.flagged && block.state !== state.question) {
+    if ( block.state == state.unset && !this.game_over) {
   
       block.clicked();
       if ( block.isMined ){
+        ev.target.style.backgroundColor = 'red';
         this.lostGame();  
       }else if(block.nearbyMines == 0){
         this.revealBlocksNear(block);
@@ -134,12 +134,23 @@ export class MineSweepersComponent implements OnInit {
     }  
   }
 
+  closeMessageButton(){
+    this.game_over_message = false;
+  }
+  startNewGame(){
+    this.closeMessageButton();
+    this.game_over = false;
+    this.grid = new Grid(this.game_level);
+  }
+
+
   //tests
   testLocation(event) {
   
-    this.grid.printGrid();
-  
+    //this.grid.printGrid();
+
   }
+
 }
 
 /*

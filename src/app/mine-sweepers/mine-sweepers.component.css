@@ -25,6 +25,7 @@
   border-right: 10px solid rgb(97, 97, 97);
 }
 .block{
+    background-color: gray;
     margin: 0px;
     text-decoration: none;
     background-color: unset;
@@ -70,7 +71,7 @@
 
     .block{
         padding:0px;
-
+        background-color: gray;
         width:70px;
         height:70px;
         margin:0px;
@@ -93,7 +94,7 @@
         width:70px;
         height:70px;
         margin:0px;
-
+        background-color: gray;
         border: 5px solid black;
         border-top: 5px solid rgb(218, 218, 218);
         border-left: 5px solid rgb(97, 97, 97);
@@ -118,6 +119,73 @@
       background-image: url("https://i.imgur.com/Kypt2fJ.png");
       background-size: contain;
     }
+    .mined{
+        position: relative;
+        top: 10px;
 
+        
 
+        width:50px;
+        height:50px;
+    }
+    .numbered{
+        
+        position: relative;
+        top: 15px;
+        width: 50px;
+        height: 50px;
+
+        font-family: cursive;
+        text-align: center;
+        font-size: 30px;
+        text-shadow: 1px 1px 1px rgb(0, 0, 55);
+
+    }
+}
+
+.game-over{
+    position: fixed;
+    background-color:white;
+
+    border: 4px solid black;
+    border-left:4px solid rgb(41, 41, 41); 
+    border-top:4px solid rgb(66, 66, 66);
+    top: 160px;
+    left: 600px;
+    width: 252px;
+    height: 200px;
+}
+
+.game-over .exit-button{
+    position: relative;
+    float: right;
+    
+    border:1px solid black;
+    background-color: white;
+}
+
+.game-over .exit-button:hover{
+    background-color: #ccc;
+}
+.game-over p{
+    position: relative;
+    top: 20px;
+    left: 15px;
+    text-align: center;
+    font-family: cursive;
+    font-size: 1em;    
+}
+.game-over .buttons{
+    position: absolute;
+    float: left;
+    bottom: 1px;
+}
+.game-over .buttons button{
+
+    cursor: pointer;
+
+    width:122px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border: 1px solid black;
 }
