@@ -23,12 +23,17 @@ export class MineSweepersComponent implements OnInit {
     question: "https://i.imgur.com/Kypt2fJ.png",
     mine: "https://i.imgur.com/T0Kwk2T.png"
   }
-
+  private blocks_open = 0;
   private game_level = new GameLevel();
   private grid = new Grid(this.game_level);
 
   private level: string = this.game_level._level.toString();
   private flags: Flags = new Flags(this.game_level);
+
+  private message = {
+    title : "",
+    content : ""
+  }
 
   constructor() {
     switch (this.level) {
@@ -73,13 +78,27 @@ export class MineSweepersComponent implements OnInit {
   }
 
   private game_over = false;
-  private game_over_message = this.game_over;
+  private pop_up_message = this.game_over;
+
+  WonGame(){
+    this.message.title = "Congratulations!";
+    this.message.content = "You Won!";
+    this.game_over = true;
+    this.pop_up_message = this.game_over;
+  }
+
   lostGame(){
 
+    this.message.title = "Game Over";
+    this.message.content = "You stepped on a mine!";
+    
     this.game_over = true;
-    this.game_over_message = this.game_over;
+    this.pop_up_message = this.game_over;
 
-    //reveal all mines
+    this.revealAllMines();
+   
+  }
+  revealAllMines(){
     for (let i = 0; i < this.grid.locations.length ; i++) {
       for (let j = 0; j <  this.grid.locations.length; j++) {
         if(this.grid.locations[i][j].isMined && 
@@ -89,7 +108,6 @@ export class MineSweepersComponent implements OnInit {
       }
     }
   }
-
   revealBlocksNear(block : Block){
 
     let arr = [];
@@ -98,8 +116,8 @@ export class MineSweepersComponent implements OnInit {
       for (let j = block.vertical - 1 ; j <=  block.vertical + 1 ; j++) {
         if(!this.grid.checkValidCoords(i,j)) continue;
         if(block.horizontal == i && block.vertical == j) continue; 
-        if(this.revealValid(i,j)) continue;        
-        this.grid.locations[i][j].clicked();
+        if(this.revealValid(i,j)) continue;
+        this.openBlock(this.grid.locations[i][j]);
         if(this.grid.locations[i][j].nearbyMines == 0 ) arr.push(this.grid.locations[i][j]);
       }
     }
@@ -115,28 +133,38 @@ export class MineSweepersComponent implements OnInit {
       || this.grid.locations[i][j].state == state.question
       || this.grid.locations[i][j].state == state.open;
   }
-  clicked(ev, block) {
 
+  openBlock(block : Block){
+    block.clicked();
+    this.blocks_open++;
+
+    if(this.blocks_open === 54)this.WonGame();
+    //complete higher level check
+
+  }
+  clicked(ev, block) {
     //first check - the user did not flag this block as a potential mined block, and this block is still active
     if ( block.state == state.unset && !this.game_over) {
-  
-      block.clicked();
+      
+      this.openBlock(block);
       if ( block.isMined ){
         ev.target.style.backgroundColor = 'red';
         this.lostGame();  
       }else if(block.nearbyMines == 0){
         this.revealBlocksNear(block);
       }
+
     }  
   }
 
   closeMessageButton(){
-    this.game_over_message = false;
+    this.pop_up_message = false;
   }
   startNewGame(num){
     this.closeMessageButton();
     this.game_over = false;
     this.game_level._level = num;
+    this.blocks_open = 0;
     this.flags = new Flags(this.game_level);
     this.grid = new Grid(new GameLevel());
   }

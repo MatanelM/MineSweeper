@@ -35,15 +35,16 @@
     </div>
   </div>
 </div>
-<div id="game_over" *ngIf="game_over_message" class="game-over">
+
+<div id="game_over" *ngIf="pop_up_message" class="pop-up">
   <div class="message-header">
-    <span class="title">Game Over</span>
+    <span class="title">{{message.title}}</span>
     <button class="exit-button" (click)="closeMessageButton()">x</button>
     
   </div>
   <p>
     <br><br>
-     You stepped on a mine!
+    {{message.content}}
     </p>
   <br><br>
 

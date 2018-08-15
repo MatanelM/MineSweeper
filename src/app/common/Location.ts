@@ -65,7 +65,7 @@ export class Location{
     }
 
 
-    idToNums( id ){
+    idToNums( id : string ){
         var nums : number[] = [Number.parseInt(id.slice(0,2)),Number.parseInt(id.slice(2,4))]
         return nums;
     }

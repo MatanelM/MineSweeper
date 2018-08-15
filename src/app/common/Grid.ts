@@ -26,11 +26,6 @@ export class Grid{
         }
     }  
 
-    // unmined = []
-    // unmined generate = for(grid.[location.vertical][location.horizontal])push arr
-    // index = generateRanomLocation(unmined.value) : index 
-    // locations[this.unmined.index]
-    // unmined.splice(index,1);
     private generateRandomLocation(maxVal) : number{
         let index =  Math.floor((Math.random() * maxVal) + 0);
         return index; 
@@ -66,7 +61,8 @@ export class Grid{
     private plantMine( block: Block ){
         block.isMined = true;
     }
-    
+
+    //if the next check up returns false, then the coordinates are not in the boundries of the grid
     checkValidCoords(x, y) {
         return (this.checkValidCoord(x) && this.checkValidCoord(y))
     }
@@ -79,15 +75,13 @@ export class Grid{
         var count = 0;
         for (let i = block.horizontal - 1; i <= block.horizontal + 1; i++) {
             for (let j = block.vertical - 1; j <= block.vertical + 1; j++) {
-                //if the check up returns false, then the coordinates are not in the boundries of the grid
-                if(!this.checkValidCoords(i,j)) continue;
+                 if(!this.checkValidCoords(i,j)) continue;
                 if(i === block.horizontal && j === block.vertical) continue;
                 if(this.getBlock(i,j).isMined)
                     count++
             }
         }
-        // console.log('count for block: ',block,count)
-        console.log(count)
+
         block.nearbyMines = count;
     }
     createGrid(length){
@@ -114,6 +108,15 @@ export class Grid{
     //return block base on coords
     public getBlock( i : number , j : number  ){
         return this.locations[i][j];
+    }
+    public getBlockById( id : string ) : Block{
+        for (let i = 0; i < this.locations.length; i++) {
+            for (let j = 0; j < this.locations.length; j++) {
+                if(this.locations[i][j].id == id){
+                    return this.locations[i][j];
+                }
+            }            
+        }
     }
     printGrid(){
         console.log("Grid : {");
