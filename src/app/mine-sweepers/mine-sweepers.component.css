@@ -205,3 +205,27 @@ h3{
 .pop-up .title{
     font-family:Arial, Helvetica, sans-serif;
 }
+.btn button{
+
+    position: relative;
+    text-decoration: none;
+    -webkit-appearance: unset;       
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    
+    margin: 20px 40px;
+
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 10px 18px;
+
+    background-color: lightgrey;
+
+    cursor: pointer;
+}
+.btn button:hover{
+    background-color: darkgrey;
+}
+.btn button:focus{
+    outline: unset;
+}

@@ -46,34 +46,26 @@ export class MineSweepersComponent implements OnInit {
   ngOnInit() {
     document.oncontextmenu = () => { return false };
   }
-
+  setFlag(block){
+    this.flags.FlagUsed();
+    block.state = state.flagged;
+  }
+  returnFlag( block : Block ){
+    this.flags.FlagReturned();
+    block.state = state.question;
+  }
   FlagUsed(event,block) {
-    //check for the activity of this block
-    if (block.state == state.open) {
-      return;
-    }
-
-    if (event.button == 2) {
-      //If statements for "flagged" and "question"
-      if (block.state == state.flagged) {
-        this.flags.FlagReturned();
-        block.state = state.question;
-        event.target.setAttribute("class", "block question")
-        return;
-      }
-      if (block.state == state.question) {
-        block.state = state.unset;
-        event.target.setAttribute("class", "block");
-        return;
-      }
+     if (event.button == 2) {
       if (this.flags.amount == 0) {
-        //return a message to the user if he had no flags left
         alert("no more flags");
         return;
       }
-      this.flags.FlagUsed();
-      block.state = state.flagged;
-      event.target.setAttribute("class", "flagged");
+      switch (block.state){
+        case state.flagged : this.returnFlag(block);return;
+        case state.question : block.state = state.unset;return;
+        case state.open : return;
+        case state.unset : this.setFlag(block);
+      }
     }
   }
 
@@ -88,7 +80,6 @@ export class MineSweepersComponent implements OnInit {
   }
 
   lostGame(){
-
     this.message.title = "Game Over";
     this.message.content = "You stepped on a mine!";
     
@@ -96,7 +87,6 @@ export class MineSweepersComponent implements OnInit {
     this.pop_up_message = this.game_over;
 
     this.revealAllMines();
-   
   }
   revealAllMines(){
     for (let i = 0; i < this.grid.locations.length ; i++) {

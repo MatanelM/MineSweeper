@@ -63,10 +63,10 @@ export class Grid{
     }
 
     //if the next check up returns false, then the coordinates are not in the boundries of the grid
-    checkValidCoords(x, y) {
+    checkValidCoords(x, y) : Boolean {
         return (this.checkValidCoord(x) && this.checkValidCoord(y))
     }
-    checkValidCoord(coord) {
+    checkValidCoord(coord) : Boolean {
         return (coord >= 0 && coord < this.locations.length)
     }
 
@@ -84,7 +84,7 @@ export class Grid{
 
         block.nearbyMines = count;
     }
-    createGrid(length){
+    private createGrid(length){
         //1. create an array of locations which indicates a mined block.
         for( let x = 0; x < length ; x++ ){
             this.rows = [];
@@ -96,19 +96,19 @@ export class Grid{
         }
         //2. planet mines on the grid
         this.plantMines(Level.Easy);
-
+        //3. if any, set on every block the number of the nearby mines
         for (let i = 0; i < length; i++) {
             for (let j = 0; j < length; j++) {
                 if(this.locations[i][j].isMined) continue;
                     this.setNearbyMinesCount(this.locations[i][j])
-            }            
+            }
         }
-        return this.locations;
     }
     //return block base on coords
     public getBlock( i : number , j : number  ){
         return this.locations[i][j];
     }
+    //return block with a given id attribute
     public getBlockById( id : string ) : Block{
         for (let i = 0; i < this.locations.length; i++) {
             for (let j = 0; j < this.locations.length; j++) {
@@ -132,16 +132,7 @@ export class Grid{
     }
 }
 
-// //the left
-// this.x[0][i-1]
-// //the next
-// this.x[0][i+1]
-// //the bottom-left
-// this.x[1][i-1]
-// //the bottom
-// this.x[1][i]
-// //the bottom-right
-// this.x[1][i+1]
+//testing methods
 // print dots
 ///[this.x[i][0].horizontal,this.x[i][0].vertical,this.x[i][1].horizontal,this.x[i][1].vertical,this.x[i][2].horizontal,this.x[i][2].vertical,this.x[i][3].horizontal,this.x[i][3].vertical,this.x[i][4].horizontal,this.x[i][4].vertical,this.x[i][5].horizontal,this.x[i][5].vertical,this.x[i][6].horizontal,this.x[i][6].vertical,this.x[i][7].horizontal,this.x[i][7].vertical]
 // print mines

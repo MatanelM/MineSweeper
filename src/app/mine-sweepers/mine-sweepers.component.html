@@ -6,14 +6,14 @@
   <h3>
     flags : {{flags.amount}} 
   </h3>
-  <div class="right">
-    <button (click)="startNewGame(0)">
+  <div class="btn btn-new">
+    <button class="ez" (click)="startNewGame(0)">
       New Easy Game
     </button>
-    <button>
+    <button class="md" >
       New Medium Game
     </button>
-    <button>
+    <button  class="hd" >
       New Hard Game
     </button>
   </div>
@@ -24,7 +24,10 @@
     <div id="" class="ver" *ngFor="let i of grid.locations" >
       <div id="" class="hor" *ngFor="let block of i">
         <div [attr.id]="block.id"
-        [class]="block.state !== block_state.open  ? 'block' : 'block unframed'" 
+        class="block"
+        [class.flagged]="block.state === block_state.flagged"
+        [class.question]="block.state === block_state.question"
+        [class.unframed]="block.state === block_state.open"
         (click)="clicked($event,block)"  
         (mousedown)="FlagUsed($event,block)" >
           <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="numbered">{{block._nearby_mines}}</span>
@@ -40,7 +43,6 @@
   <div class="message-header">
     <span class="title">{{message.title}}</span>
     <button class="exit-button" (click)="closeMessageButton()">x</button>
-    
   </div>
   <p>
     <br><br>

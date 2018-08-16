@@ -9,7 +9,7 @@ import { MineSweepersComponent } from './mine-sweepers/mine-sweepers.component';
 @NgModule({
   declarations: [
     AppComponent,
-    MineSweepersComponent,
+    MineSweepersComponent
   ],
   imports: [
     BrowserModule
