@@ -21,10 +21,10 @@ export class MineSweepersComponent implements OnInit {
 
   private blocks_open = 0;
   private blocks_to_win : Number = 0;
-  private game_level = new GameLevel(Level.Easy);
+  public game_level = new GameLevel(Level.Easy);
   private grid = new Grid(this.game_level);
-  private blocks : Block[] = [];
-  private flags: Flags = new Flags(this.game_level);
+  public blocks : Block[] = [];
+  public flags: Flags = new Flags(this.game_level);
 
   private message = {
     title : "",
@@ -75,7 +75,7 @@ export class MineSweepersComponent implements OnInit {
   }
 
   private game_over = false;
-  private pop_up_message = this.game_over;
+  public pop_up_message = this.game_over;
 
   WonGame(){
     this.message.title = "Congratulations!";

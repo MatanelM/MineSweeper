@@ -1,14 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-h1{
-    position: relative;
-    width: 100%;
-    margin: 0px;
-    padding: 8px;
-    background-color: #aaa;
-    text-align: center;
-    font-family: cursive;
-}
+
 body{
 
     margin: 0px;
