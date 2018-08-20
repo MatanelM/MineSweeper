@@ -7,7 +7,7 @@ export class Flags{
     public image : string;
 
     constructor( gameLevel : GameLevel ){
-        switch (gameLevel._level) {
+        switch (gameLevel.level) {
             case Level.Easy : this.amount = 10;break;
             case Level.Medium : this.amount = 20;break;
             case Level.Hard : this.amount = 50;break;

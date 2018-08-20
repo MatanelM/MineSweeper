@@ -1,44 +1,66 @@
 
 <div class="header">
   <h3 class="center">
-    Level {{level}}
+    Level {{ game_level.level | LevelSummary }}
   </h3>
   <h3>
     flags : {{flags.amount}} 
   </h3>
-  <div class="btn btn-new">
-    <button class="ez" (click)="startNewGame(0)">
+  <div class="new-game">
+    <button (click)="setNewLevel(0)">
       New Easy Game
     </button>
-    <button class="md" >
+    <button (click)="setNewLevel(1)">
       New Medium Game
     </button>
-    <button  class="hd" >
+    <button (click)="setNewLevel(2)" >
       New Hard Game
     </button>
   </div>
 </div>
-
 <div class="bordered-out">
   <div class="bordered-in">
-    <div id="" class="ver" *ngFor="let i of grid.locations" >
-      <div id="" class="hor" *ngFor="let block of i">
+    <div id="field" 
+    [class.easy]="game_level.level === 0"
+    [class.medium]="game_level.level === 1"
+    [class.hard]="game_level.level === 2"
+    >
+      <div [attr.id]="block.id"
+          class="block" 
+          [class.flag]="block.state === block_state.flagged"
+          [class.question]="block.state === block_state.question"
+          [class.open]="block.state === block_state.open"
+          (click)="clicked($event,block)"  
+          (mousedown)="FlagUsed($event,block)" 
+          *ngFor="let block of blocks">
+        <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{block._nearby_mines}}</span>
+        <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mine" />
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+<div class="bordered-out">
+  <div  class="bordered-in" >
+    <div class="ver" *ngFor="let i of grid.locations" >
+      <div class="hor" *ngFor="let block of i">
         <div [attr.id]="block.id"
         class="block"
         [class.flagged]="block.state === block_state.flagged"
         [class.question]="block.state === block_state.question"
         [class.unframed]="block.state === block_state.open"
+              
+
         (click)="clicked($event,block)"  
         (mousedown)="FlagUsed($event,block)" >
           <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="numbered">{{block._nearby_mines}}</span>
-          <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" 
-          class="mined" />
+          <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mined" />
         </div>
       </div>
     </div>
   </div>
 </div>
-
+-->
 <div id="game_over" *ngIf="pop_up_message" class="pop-up">
   <div class="message-header">
     <span class="title">{{message.title}}</span>
@@ -52,6 +74,6 @@
 
   <div class="buttons">
     <button type="button" (click)="closeMessageButton()">Ok</button>
-    <button type="button" (click)="startNewGame(0)">New Game</button>
+    <button type="button" (click)="startNewGame()">New Game</button>
   </div>
 </div>

@@ -11,18 +11,17 @@ export class Grid{
     public locations : any[] ;
     //rows              store a row of block
     public rows : Block[];
-    //level             this is giving the number of columns and rows to the grid
-    private level : any = {easy:8,medium:12,hard:20}
 
+    public blocks : Block[] = [];
 
     constructor(_game_level : GameLevel ){
 
         this.locations = [];
 
-        switch (_game_level._level){
-            case Level.Easy : this.createGrid(this.level.easy);break;
-            case Level.Medium : this.createGrid(this.level.medium);break;
-            case Level.Hard : this.createGrid(this.level.hard);break;
+        switch (_game_level.level){
+            case Level.Easy : this.createGrid(8);break;
+            case Level.Medium : this.createGrid(12);break;
+            case Level.Hard : this.createGrid(16);break;
         }
     }  
 
@@ -40,15 +39,15 @@ export class Grid{
         }
         return arr;
     }
-    private plantMines(level: Level){
+    private plantMines(length){
         let number_of_mines : number ;
-        switch(level){
-            case Level.Easy : number_of_mines = 10;break;
-            case Level.Medium : number_of_mines = 20;break;
-            case Level.Hard : number_of_mines = 50; break; 
+        switch(length){
+            case 8 : number_of_mines = 10;break;
+            case 12 : number_of_mines = 20;break;
+            case 16 : number_of_mines = 50; break; 
         }
 
-        let unMined = this.generateGridArr(this.level.easy);
+        let unMined = this.generateGridArr(length);
 
         for (let i = 0; i < number_of_mines; i++) {
             let index = this.generateRandomLocation(unMined.length-1);
@@ -95,7 +94,7 @@ export class Grid{
             this.locations.push(this.rows);
         }
         //2. planet mines on the grid
-        this.plantMines(Level.Easy);
+        this.plantMines(length);
         //3. if any, set on every block the number of the nearby mines
         for (let i = 0; i < length; i++) {
             for (let j = 0; j < length; j++) {

@@ -4,8 +4,6 @@ import { state } from "./State";
 export class Block extends Location {
   private _isFlagged: boolean;
 
-  public color: string = "gray";
-
   public _state: state;
 
   private _isMined: boolean = false;
