@@ -2,8 +2,6 @@ import { Location } from './Location';
 import { Level } from './Levels';
 import { GameLevel } from './GameLevel';
 import { Block } from './Block';
-import { Mine } from './Mine';
-import { Numbered } from './Numbered';
 
 export class Grid{
 

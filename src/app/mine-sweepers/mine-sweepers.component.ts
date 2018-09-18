@@ -59,8 +59,14 @@ export class MineSweepersComponent implements OnInit {
     this.flags.FlagReturned();
     block.state = state.question;
   }
-  FlagUsed(event,block) {
-     if (event.button == 2) {
+
+  rightClickCheck(event, block){
+    if(event.button == 2){
+      this.flagUsed(block)
+    }
+  }
+
+  flagUsed(block) {
       if (this.flags.amount == 0) {
         alert("no more flags");
         return;
@@ -71,7 +77,6 @@ export class MineSweepersComponent implements OnInit {
         case state.open : return;
         case state.unset : this.setFlag(block);
       }
-    }
   }
 
   private game_over = false;
@@ -119,7 +124,6 @@ export class MineSweepersComponent implements OnInit {
     for (let i = 0; i < arr.length; i++) {
       this.revealBlocksNear(arr[i])      
     }
-
   }
 
   revealValid(i,j){
@@ -128,21 +132,27 @@ export class MineSweepersComponent implements OnInit {
       || this.grid.locations[i][j].state == state.open;
   }
 
+  winCheck(){
+    return this.blocks_open === this.blocks_to_win
+  }
+
   openBlock(block : Block){
     block.clicked();
     this.blocks_open++;
-
-    if(this.blocks_open === this.blocks_to_win)this.WonGame();
-    //complete higher level check
-
+    if(this.winCheck())this.WonGame();
   }
-  clicked(ev, block) {
-    //first check - the user did not flag this block as a potential mined block, and this block is still active
+
+  setBackgroundRed(block){
+    let id = block.numsToId([block.horizontal, block.vertical])
+    document.getElementById(id).style.backgroundColor = 'red'
+  }
+
+  clicked(block) {
     if ( block.state == state.unset && !this.game_over) {
       this.openBlock(block);
       if ( block.isMined ){
-        ev.target.style.backgroundColor = 'red';
-        this.lostGame();  
+        this.setBackgroundRed(block);
+        this.lostGame();
       }else if(block.nearbyMines == 0){
         this.revealBlocksNear(block);
       }
@@ -152,16 +162,11 @@ export class MineSweepersComponent implements OnInit {
     this.pop_up_message = false;
   }
   startNewGame(){
-    //clear message
     this.closeMessageButton();
-    //unfreeze the game
     this.game_over = false;
-    //reset variables
     this.blocks_open = 0;
     this.flags = new Flags(this.game_level);
-    //generate new grid
     this.grid = new Grid(this.game_level);
-    //restart game
     this.copyAllBlocksInArray();
 
   }

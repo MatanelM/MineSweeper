@@ -30,8 +30,8 @@
           [class.flag]="block.state === block_state.flagged"
           [class.question]="block.state === block_state.question"
           [class.open]="block.state === block_state.open"
-          (click)="clicked($event,block)"  
-          (mousedown)="FlagUsed($event,block)" 
+          (click)="clicked(block)"  
+          (mousedown)="rightClickCheck($event,block)" 
           *ngFor="let block of blocks">
         <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{block._nearby_mines}}</span>
         <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mine" />
@@ -39,28 +39,7 @@
     </div>
   </div>
 </div>
-<!--
-<div class="bordered-out">
-  <div  class="bordered-in" >
-    <div class="ver" *ngFor="let i of grid.locations" >
-      <div class="hor" *ngFor="let block of i">
-        <div [attr.id]="block.id"
-        class="block"
-        [class.flagged]="block.state === block_state.flagged"
-        [class.question]="block.state === block_state.question"
-        [class.unframed]="block.state === block_state.open"
-              
 
-        (click)="clicked($event,block)"  
-        (mousedown)="FlagUsed($event,block)" >
-          <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="numbered">{{block._nearby_mines}}</span>
-          <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mined" />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
--->
 <div id="game_over" *ngIf="pop_up_message" class="pop-up">
   <div class="message-header">
     <span class="title">{{message.title}}</span>
