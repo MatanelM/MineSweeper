@@ -9,9 +9,9 @@ h1{
 }
 
 app-mine-sweepers{
-  position:absolute;
-  left:20%;
-
+  min-width: 200px;
+  width: 600px;
+  margin: 10px auto;
 }
 
 

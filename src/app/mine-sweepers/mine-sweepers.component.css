@@ -1,7 +1,29 @@
+h3{
+    font-family:cursive;
+}
+
+.bordered-out{
+    margin: 0px auto;
+    width: 656px;
+    height: 656px;
+    border: 8px solid black;
+    border-top: 8px solid rgb(218, 218, 218);
+    border-left: 8px solid rgb(97, 97, 97);
+}
+.bordered-in{
+    width: 640px;
+    height: 640px;
+    border: 8px solid black;
+    border-bottom: 8px solid rgb(218, 218, 218);
+    border-right: 8px solid rgb(97, 97, 97);
+}
 
 #field{
     display:grid;
+    min-height:320px;
+    overflow: hidden;
 }
+
 .easy {
     grid-template-columns: repeat(8,80px);
     grid-template-rows: repeat(8,80px);
@@ -93,23 +115,7 @@ mine{
 .center{
     text-align: center;
 }
-h3{
-    font-family:cursive;
-}
-.bordered-out{
-  width: 656px;
-  height: 656px;
-  border: 8px solid black;
-  border-top: 8px solid rgb(218, 218, 218);
-  border-left: 8px solid rgb(97, 97, 97);
-}
-.bordered-in{
-  width: 640px;
-  height: 640px;
-  border: 8px solid black;
-  border-bottom: 8px solid rgb(218, 218, 218);
-  border-right: 8px solid rgb(97, 97, 97);
-}
+
 .pop-up{
     position: fixed;
     background-color:white;
@@ -166,7 +172,10 @@ h3{
 .pop-up .title{
     font-family:Arial, Helvetica, sans-serif;
 }
-
+.header{
+    width: 672px;    
+    margin: 0px auto;
+}
 .new-game{
     display: flex;
     justify-content: space-around;
