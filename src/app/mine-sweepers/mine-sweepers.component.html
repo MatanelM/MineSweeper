@@ -42,15 +42,12 @@
 
 <div id="game_over" *ngIf="pop_up_message" class="pop-up">
   <div class="message-header">
-    <span class="title">{{message.title}}</span>
+    <span class="title">{{ message.title }}</span>
     <button class="exit-button" (click)="closeMessageButton()">x</button>
   </div>
-  <p>
-    <br><br>
-    {{message.content}}
-    </p>
-  <br><br>
-
+  <p class="center">
+    {{ message.content }}
+  </p>
   <div class="buttons">
     <button type="button" (click)="closeMessageButton()">Ok</button>
     <button type="button" (click)="startNewGame()">New Game</button>
