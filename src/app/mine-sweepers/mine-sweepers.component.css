@@ -45,34 +45,25 @@ h3{
         border-bottom: 8px solid rgb(218, 218, 218);
         border-right: 8px solid rgb(97, 97, 97);
     }
-    .easy {
-        grid-template-columns: repeat(8,60px);
-        grid-template-rows: repeat(8,60px);
+    .medium .mine, .hard .mine{
+        width:100%;
+        height: 100%;
     }
-    .medium {
-        grid-template-columns: repeat(12,40px);
-        grid-template-rows: repeat(12,40px);
-    }
-    .hard {
-        grid-template-columns: repeat(16,30px);
-        grid-template-rows: repeat(16,30px);
-    }
-}
+}   
 
 .easy {
     grid-template-columns: repeat(8,12.5%);
     grid-template-rows: repeat(8,12.5%);
 }
 .medium{
-    grid-template-columns: repeat(12,53.33px);
-    grid-template-rows: repeat(12,53.33px);
+    grid-template-columns: repeat(12,8.33%);
+    grid-template-rows: repeat(12,8.33%);
 }
 .hard{
-    grid-template-columns: repeat(16,40px);
-    grid-template-rows: repeat(16,40px);
+    grid-template-columns: repeat(16,6.25%);
+    grid-template-rows: repeat(16,6.25%);
 }
 .block{
-
     background-color: grey;
     display: flex;
     justify-content: center;
