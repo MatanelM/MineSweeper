@@ -19,8 +19,8 @@ export class MineSweepersComponent implements OnInit {
 
   public block_state = state;
 
-  private blocks_open = 0;
-  private blocks_to_win : Number = 0;
+  private blocks_open : number = 0;
+  private blocks_to_win : number = 54;
   public game_level = new GameLevel(Level.Easy);
   private grid = new Grid(this.game_level);
   public blocks : Block[] = [];
@@ -35,6 +35,9 @@ export class MineSweepersComponent implements OnInit {
     question: "https://i.imgur.com/Kypt2fJ.png",
     mine: "https://i.imgur.com/T0Kwk2T.png"
   }
+  private game_over = false;
+  public pop_up_message = this.game_over;
+
   constructor() {
     this.copyAllBlocksInArray();
   }
@@ -78,9 +81,6 @@ export class MineSweepersComponent implements OnInit {
         case state.unset : this.setFlag(block);
       }
   }
-
-  private game_over = false;
-  public pop_up_message = this.game_over;
 
   WonGame(){
     this.message.title = "Congratulations!";
