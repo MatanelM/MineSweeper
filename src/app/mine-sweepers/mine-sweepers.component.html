@@ -1,7 +1,7 @@
 
 <div class="header">
   <h3 class="center">
-    Level {{ game_level.level | LevelSummary }}
+    Level {{ level | LevelSummary }}
   </h3>
   <h3>
     flags : {{flags.amount}} 
@@ -15,9 +15,9 @@
 <div class="bordered-out">
   <div class="bordered-in">
     <div id="field" 
-    [class.easy]="game_level.level === 0"
-    [class.medium]="game_level.level === 1"
-    [class.hard]="game_level.level === 2"
+    [class.easy]="level === 0"
+    [class.medium]="level === 1"
+    [class.hard]="level === 2"
     >
       <div [attr.id]="block.id"
           class="block" 
@@ -26,7 +26,7 @@
           [class.open]="block.state === block_state.open"
           (click)="clicked(block)"  
           (mousedown)="rightClickCheck($event,block)" 
-          *ngFor="let block of blocks">
+          *ngFor="let block of grid.blocks">
         <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{block._nearby_mines}}</span>
         <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mine" />
       </div>

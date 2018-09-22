@@ -14,7 +14,6 @@ export class Block extends Location {
     super(x, y);
     this._isFlagged = false;
     this._state = state.unset;
-    this._nearby_mines = 0;
   }
 
   clicked() {
@@ -34,13 +33,6 @@ export class Block extends Location {
   }
   set isMined(newIsMined: boolean) {
     this._isMined = newIsMined;
-  }
-
-  get isNumbered(): boolean {
-    if (this.isMined == null) {
-      return true;
-    }
-    return null;
   }
   get isFlagged(): boolean {
     return this._isFlagged;

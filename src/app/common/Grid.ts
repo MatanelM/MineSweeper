@@ -1,25 +1,19 @@
 import { Location } from './Location';
 import { Level } from './Levels';
-import { GameLevel } from './GameLevel';
 import { Block } from './Block';
 
 export class Grid{
 
-    //loctions          the total block grid set in this property
-    public locations : any[] ;
-    //rows              store a row of block
-    public rows : Block[];
-
     public blocks : Block[] = [];
 
-    constructor(_game_level : GameLevel ){
+    public length ;
 
-        this.locations = [];
+    constructor( level: Level ){
 
-        switch (_game_level.level){
-            case Level.Easy : this.createGrid(8);break;
-            case Level.Medium : this.createGrid(12);break;
-            case Level.Hard : this.createGrid(16);break;
+        switch (level){
+            case Level.Easy : this.length = 8; this.createGrid(this.length); break;
+            case Level.Medium : this.length = 12; this.createGrid(this.length); break;
+            case Level.Hard : this.length = 16; this.createGrid(this.length); break;
         }
     }  
 
@@ -27,16 +21,15 @@ export class Grid{
         let index =  Math.floor((Math.random() * maxVal) + 0);
         return index; 
     } 
-    private generateGridArr(length){
-        let arr : Location[] = [];
-        for (let i = 0; i < length; i++) {
-            
-            for (let j = 0; j < length; j++) {
-                arr.push(new Location(i,j))
-            }
+
+    generateGridArray(){
+        var arr = []
+        for (let i = 0; i < this.blocks.length; i++) {
+            arr.push(this.blocks[i])
         }
-        return arr;
+        return arr
     }
+
     private plantMines(length){
         let number_of_mines : number ;
         switch(length){
@@ -44,14 +37,13 @@ export class Grid{
             case 12 : number_of_mines = 20;break;
             case 16 : number_of_mines = 50; break; 
         }
-
-        let unMined = this.generateGridArr(length);
+        var unMined = this.generateGridArray();
 
         for (let i = 0; i < number_of_mines; i++) {
             let index = this.generateRandomLocation(unMined.length-1);
             let n = unMined[index].horizontal;
             let m = unMined[index].vertical;
-            this.plantMine(this.locations[n][m]);
+            this.plantMine(this.getBlock(n,m));
             unMined.splice(index,1);
         }
     }
@@ -60,11 +52,11 @@ export class Grid{
     }
 
     //if the next check up returns false, then the coordinates are not in the boundries of the grid
-    checkValidCoords(x, y) : Boolean {
+    checkValidCoords(x, y) : boolean {
         return (this.checkValidCoord(x) && this.checkValidCoord(y))
     }
-    checkValidCoord(coord) : Boolean {
-        return (coord >= 0 && coord < this.locations.length)
+    checkValidCoord(coord) : boolean {
+        return (coord >= 0 && coord < this.length)
     }
 
     //give the block indication of how many mines are nearby
@@ -72,7 +64,7 @@ export class Grid{
         var count = 0;
         for (let i = block.horizontal - 1; i <= block.horizontal + 1; i++) {
             for (let j = block.vertical - 1; j <= block.vertical + 1; j++) {
-                 if(!this.checkValidCoords(i,j)) continue;
+                if(!this.checkValidCoords(i,j)) continue;
                 if(i === block.horizontal && j === block.vertical) continue;
                 if(this.getBlock(i,j).isMined)
                     count++
@@ -84,48 +76,35 @@ export class Grid{
     private createGrid(length){
         //1. create an array of locations which indicates a mined block.
         for( let x = 0; x < length ; x++ ){
-            this.rows = [];
             for( let y = 0; y < length ; y++ ){
                 let block = new Block(x,y);
-                this.rows.push(block);
+                this.blocks.push(block);
             }
-            this.locations.push(this.rows);
         }
         //2. planet mines on the grid
         this.plantMines(length);
         //3. if any, set on every block the number of the nearby mines
         for (let i = 0; i < length; i++) {
             for (let j = 0; j < length; j++) {
-                if(this.locations[i][j].isMined) continue;
-                    this.setNearbyMinesCount(this.locations[i][j])
+                if(this.getBlock(i,j).isMined) continue;
+                this.setNearbyMinesCount(this.getBlock(i,j))
             }
         }
     }
     //return block base on coords
-    public getBlock( i : number , j : number  ){
-        return this.locations[i][j];
+    public getBlock( i : number , j : number  ): Block{
+
+        return this.blocks[i*this.length+j]
     }
     //return block with a given id attribute
     public getBlockById( id : string ) : Block{
-        for (let i = 0; i < this.locations.length; i++) {
-            for (let j = 0; j < this.locations.length; j++) {
-                if(this.locations[i][j].id == id){
-                    return this.locations[i][j];
-                }
-            }            
-        }
+        //tempo 
+        let location = new Location(0,0);
+        let nums = location.idToNums(id) 
+        return this.getBlock(nums[0], nums[1]);
     }
     printGrid(){
-        console.log("Grid : {");
-        for(let i = 0 ; i< 8 ; i++){
-            console.log([this.locations[i][0].isMined,this.locations[i][1].isMined,this.locations[i][2].isMined,this.locations[i][3].isMined,this.locations[i][4].isMined,this.locations[i][5].isMined,this.locations[i][6].isMined,this.locations[i][7].isMined]);            
-        }
-        console.log("}");  
-         console.log("Grid : {");
-        for(let i = 0 ; i< 8 ; i++){
-            console.log([this.locations[i][0].nearbyMines,this.locations[i][1].nearbyMines,this.locations[i][2].nearbyMines,this.locations[i][3].nearbyMines,this.locations[i][4].nearbyMines,this.locations[i][5].nearbyMines,this.locations[i][6].nearbyMines,this.locations[i][7].nearbyMines]);            
-        }
-        console.log("}")
+
     }
 }
 

@@ -4,7 +4,6 @@ import { Location } from './../common/Location';
 
 import { Block } from './../common/Block';
 import { Flags } from './../common/Flags';
-import { GameLevel } from './../common/GameLevel';
 import { Component, OnInit } from '@angular/core';
 import { Level } from '../common/Levels';
 import { EventEmitter } from 'events';
@@ -21,10 +20,10 @@ export class MineSweepersComponent implements OnInit {
 
   private blocks_open : number = 0;
   private blocks_to_win : number = 54;
-  public game_level = new GameLevel(Level.Easy);
-  private grid = new Grid(this.game_level);
   public blocks : Block[] = [];
-  public flags: Flags = new Flags(this.game_level);
+  public level : Level = Level.Easy;
+  public grid = new Grid(this.level);
+  public flags: Flags = new Flags(this.level);
 
   private message = {
     title : "",
@@ -39,16 +38,7 @@ export class MineSweepersComponent implements OnInit {
   public pop_up_message = this.game_over;
 
   constructor() {
-    this.copyAllBlocksInArray();
-  }
 
-  copyAllBlocksInArray(){
-    this.blocks = [];
-    for (let i = 0; i < this.grid.locations.length; i++) {
-      for (let j = 0; j < this.grid.locations.length; j++) {
-        this.blocks[this.blocks.length] = this.grid.locations[i][j];
-      }
-    }
   }
 
   ngOnInit() {
@@ -99,11 +89,11 @@ export class MineSweepersComponent implements OnInit {
     this.revealAllMines();
   }
   revealAllMines(){
-    for (let i = 0; i < this.grid.locations.length ; i++) {
-      for (let j = 0; j <  this.grid.locations.length; j++) {
-        if(this.grid.locations[i][j].isMined && 
-          (this.grid.locations[i][j].state != state.flagged && this.grid.locations[i][j].state != state.question)){
-          this.grid.locations[i][j].clicked();
+    for (let i = 0; i < this.grid.length ; i++) {
+      for (let j = 0; j <  this.grid.length; j++) {
+        if(this.grid.getBlock(i,j).isMined && 
+          (this.grid.getBlock(i,j).state != state.flagged && this.grid.getBlock(i,j).state != state.question)){
+          this.grid.getBlock(i,j).clicked();
         }
       }
     }
@@ -116,8 +106,8 @@ export class MineSweepersComponent implements OnInit {
         if(!this.grid.checkValidCoords(i,j)) continue;
         if(block.horizontal == i && block.vertical == j) continue; 
         if(this.revealValid(i,j)) continue;
-        this.openBlock(this.grid.locations[i][j]);
-        if(this.grid.locations[i][j].nearbyMines == 0 ) arr.push(this.grid.locations[i][j]);
+        this.openBlock(this.grid.getBlock(i,j));
+        if(this.grid.getBlock(i,j).nearbyMines == 0 ) arr.push(this.grid.getBlock(i,j));
       }
     }
     
@@ -127,9 +117,9 @@ export class MineSweepersComponent implements OnInit {
   }
 
   revealValid(i,j){
-    return  this.grid.locations[i][j].state == state.flagged
-      || this.grid.locations[i][j].state == state.question
-      || this.grid.locations[i][j].state == state.open;
+    return  this.grid.getBlock(i,j).state == state.flagged
+      || this.grid.getBlock(i,j).state == state.question
+      || this.grid.getBlock(i,j).state == state.open;
   }
 
   winCheck(){
@@ -165,16 +155,16 @@ export class MineSweepersComponent implements OnInit {
     this.closeMessageButton();
     this.game_over = false;
     this.blocks_open = 0;
-    this.flags = new Flags(this.game_level);
-    this.grid = new Grid(this.game_level);
-    this.copyAllBlocksInArray();
+    this.flags = new Flags(this.level);
+    this.grid = new Grid(this.level);
 
   }
   setNewLevel(num){
+    
     switch(num){
-      case 0 : this.game_level.level = Level.Easy;this.blocks_to_win=54;break;
-      case 1 : this.game_level.level = Level.Medium;this.blocks_to_win=124;break;
-      case 2 : this.game_level.level = Level.Hard;this.blocks_to_win=391;break;
+      case 0 : this.level = Level.Easy;this.blocks_to_win=54;break;
+      case 1 : this.level = Level.Medium;this.blocks_to_win=124;break;
+      case 2 : this.level = Level.Hard;this.blocks_to_win=391;break;
     }
     this.startNewGame();
   }

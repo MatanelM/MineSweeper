@@ -17,7 +17,6 @@ h3{
     border-left: 8px solid rgb(97, 97, 97);
 }
 .bordered-in{
-
     width: 640px;
     height: 640px;
     border: 8px solid black;
@@ -95,16 +94,10 @@ h3{
         margin: 0px auto;
         width: 496px;
         height: 496px;
-        border: 8px solid black;
-        border-top: 8px solid rgb(218, 218, 218);
-        border-left: 8px solid rgb(97, 97, 97);
     }
     .bordered-in {
         width: 480px;
         height: 480px;
-        border: 8px solid black;
-        border-bottom: 8px solid rgb(218, 218, 218);
-        border-right: 8px solid rgb(97, 97, 97);
     }
     .medium .mine, .hard .mine{
         width:100%;
