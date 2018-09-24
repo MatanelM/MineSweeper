@@ -19,7 +19,6 @@ export class Flags{
             this.amount --;
             return;
         }
-        throw new Error('Cannot use any more flags, flag amount is 0');
     }
 
     FlagReturned(){

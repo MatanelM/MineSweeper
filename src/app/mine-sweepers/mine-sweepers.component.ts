@@ -17,10 +17,9 @@ import { Grid } from '../common/Grid';
 export class MineSweepersComponent implements OnInit {
 
   public block_state = state;
-
+  public flag_clicked = false;
   private blocks_open : number = 0;
   private blocks_to_win : number = 54;
-  public blocks : Block[] = [];
   public level : Level = Level.Easy;
   public grid = new Grid(this.level);
   public flags: Flags = new Flags(this.level);
@@ -34,13 +33,19 @@ export class MineSweepersComponent implements OnInit {
     question: "https://i.imgur.com/Kypt2fJ.png",
     mine: "https://i.imgur.com/T0Kwk2T.png"
   }
+
   private game_over = false;
   public pop_up_message = this.game_over;
+
+  public click_event = new EventEmitter();
 
   constructor() {
 
   }
 
+  flagButton(){
+    this.flag_clicked = this.flag_clicked ? false : true ;
+  }
   ngOnInit() {
     document.oncontextmenu = () => { return false };
   }
@@ -54,17 +59,18 @@ export class MineSweepersComponent implements OnInit {
   }
 
   rightClickCheck(event, block){
-    if(event.button == 2){
+    if( event.button == 2 || this.flag_clicked ){
       this.flagUsed(block)
-    }
+      this.flag_clicked = false;
+    } 
   }
 
   flagUsed(block) {
-      if (this.flags.amount == 0) {
+      if ( this.flags.amount == 0 && block.state != state.flagged ) {
         alert("no more flags");
         return;
       }
-      switch (block.state){
+      switch ( block.state ){
         case state.flagged : this.returnFlag(block);return;
         case state.question : block.state = state.unset;return;
         case state.open : return;

@@ -3,9 +3,12 @@
   <h3 class="center">
     Level {{ level | LevelSummary }}
   </h3>
-  <h3>
-    flags : {{flags.amount}} 
-  </h3>
+  <div id="flag" class="flag-container">
+    <h3>
+      flags : {{ flags.amount }} 
+    </h3>
+    <div class="flag-button" [class.active]="flag_clicked" (click)="flagButton()"></div>
+  </div>
   <div class="new-game">
     <button (click)="setNewLevel(0)">New Easy Game</button>
     <button (click)="setNewLevel(1)">New Medium Game</button>
@@ -24,7 +27,7 @@
           [class.flag]="block.state === block_state.flagged"
           [class.question]="block.state === block_state.question"
           [class.open]="block.state === block_state.open"
-          (click)="clicked(block)"  
+          (click)="clicked(block)"
           (mousedown)="rightClickCheck($event,block)" 
           *ngFor="let block of grid.blocks">
         <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{block._nearby_mines}}</span>

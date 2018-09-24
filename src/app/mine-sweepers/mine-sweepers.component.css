@@ -8,20 +8,22 @@ h3{
     height: 640px;
     width: 640px;
 }
-.bordered-out{
-    margin: 0px auto;
+.bordered-in, .bordered-out{
     width: 656px;
     height: 656px;
-    border: 8px solid black;
-    border-top: 8px solid rgb(218, 218, 218);
-    border-left: 8px solid rgb(97, 97, 97);
+    border-width: 8px;
+    border-style: solid;
+    border-color: black;
+}
+.bordered-out{
+    margin: 0px auto;
+    border-top-color: rgb(218, 218, 218);
+    border-left-color: rgb(97, 97, 97);
 }
 .bordered-in{
-    width: 640px;
-    height: 640px;
-    border: 8px solid black;
-    border-bottom: 8px solid rgb(218, 218, 218);
-    border-right: 8px solid rgb(97, 97, 97);
+    box-sizing: border-box;
+    border-bottom-color:  rgb(218, 218, 218);
+    border-right-color: rgb(97, 97, 97);
 }
 @media(min-width: 0px){
     .pop-up{
@@ -41,7 +43,6 @@ h3{
     
         box-shadow: 0px 0px 3px 0px black;
     }
-    
     .pop-up .exit-button, .pop-up p, .pop-up .message-header{
         position: relative;
     }
@@ -82,22 +83,17 @@ h3{
     }
     .header{
         width: 672px;
-    }
-} 
+    }   
+}
 
-@media(max-width: 900px) and (min-width:640px){
+@media(max-width: 900px) and (min-width: 640px){
     #field{
         width: 480px;
         height: 480px;
     }
-    .bordered-out {
-        margin: 0px auto;
+    .bordered-out, .bordered-in {
         width: 496px;
         height: 496px;
-    }
-    .bordered-in {
-        width: 480px;
-        height: 480px;
     }
     .medium .mine, .hard .mine{
         width:100%;
@@ -112,27 +108,15 @@ h3{
         width: 320px;
         height: 320px;
     }
-    .bordered-out {
-        margin: 0px auto;
+    .bordered-in, .bordered-out{
         width: 332px;
         height: 332px;
-        border: 6px solid black;
-        border-top: 6px solid rgb(218, 218, 218);
-        border-left: 6px solid rgb(97, 97, 97);
+        border-width:6px;
     }
-    .bordered-in {
-        width: 320px;
-        height: 320px;
-        border: 6px solid black;
-        border-bottom: 6px solid rgb(218, 218, 218);
-        border-right: 6px solid rgb(97, 97, 97);
-    }
-
     .easy .mine, .medium .mine, .hard .mine{
         width:100%;
         height: 100%;
     }
-
     .pop-up{
         position: fixed;
         overflow: hidden;
@@ -155,6 +139,9 @@ h3{
     .header{
         width: 320px;
     }
+    .new-game button{
+        margin: 20px 15px;
+    }
 }  
 .easy {
     grid-template-columns: repeat(8,12.5%);
@@ -168,58 +155,56 @@ h3{
     grid-template-columns: repeat(16,6.25%);
     grid-template-rows: repeat(16,6.25%);
 }
-.block{
+.block, .flag-button{
     background-color: grey;
+    box-sizing: border-box;
+}
+.flag-button:focus{
+    background-color: rgb(255, 0, 0);
+}
+.flag-button{
+    width: 80px;
+    height: 80px;
+}
+.block, .flag-button{
+    border-color: black;
+    border-top-color: rgb(218, 218, 218);
+    border-left-color: rgb(97, 97, 97);
+    border-style: solid;
+}
+.block{
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    box-sizing: border-box;
 }
-.easy .block{
-    border: 5px solid black;
-    border-top: 5px solid rgb(218, 218, 218);
-    border-left: 5px solid rgb(97, 97, 97);
+.easy .block, .flag-button{
+    border-width: 5px;
 }
-.easy .block:active{
-    border: 5px solid black;
-    border-bottom: 5px solid rgb(218, 218, 218);
-    border-right: 5px solid rgb(145, 145, 145);
+.easy .block:active, .medium .block:active, .hard .block:active, .flag-button:active{
+    border-color: black;
+    border-bottom-color: rgb(218, 218, 218);
+    border-right-color: rgb(145, 145, 145);
 }
 .medium .block{
-    border: 4px solid black;
-    border-top: 4px solid rgb(218, 218, 218);
-    border-left: 4px solid rgb(97, 97, 97);
-    
-}
-.medium .block:active{
-    border: 4px solid black;
-    border-bottom: 4px solid rgb(218, 218, 218);
-    border-right: 4px solid rgb(145, 145, 145);
+    border-width: 4px;
 }
 .hard .block{
-    border: 3px solid black;
-    border-top: 3px solid rgb(218, 218, 218);
-    border-left: 3px solid rgb(97, 97, 97);
+    border-width: 3px;
 }
-.hard .block:active{
-    border: 3px solid black;
-    border-bottom: 3px solid rgb(218, 218, 218);
-    border-right: 3px solid rgb(145, 145, 145);
-}
-.flag{
-    width:100%;
-    height:100%;
+.flag, .flag-button{
     background-image: url("https://i.imgur.com/vnZ0mIf.png");
     background-size: contain;
-    border: unset;
+}
+.flag {
+    width:100%;
+    height:100%;
 }
 .flag:active{
     background-color: red;
     border: 5px solid black;
     border-top: 5px solid rgb(218, 218, 218);
     border-left: 5px solid rgb(97, 97, 97);
-
 }
 .question{
     background-image: url("https://i.imgur.com/Kypt2fJ.png");
@@ -246,7 +231,9 @@ h3{
 }
 .new-game{
     display: flex;
+    flex-flow: initial;
     justify-content: space-around;
+
 }
 .new-game button{
     text-decoration: none;
@@ -255,7 +242,7 @@ h3{
     border: 1px solid black;
     border-radius: 3px;
     padding: 10px 18px;
-    margin: 20px 40px;
+    margin: 20px 15px;
     background-color: lightgrey;
 
     cursor: pointer;
@@ -268,4 +255,14 @@ h3{
 }
 .new-game button:focus{
     outline: unset;
+}
+.flag-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.active{
+    border: 5px solid black;
+    border-bottom: 5px solid rgb(218, 218, 218);
+    border-right: 5px solid rgb(145, 145, 145);
 }
