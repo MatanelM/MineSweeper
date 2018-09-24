@@ -15,16 +15,18 @@ import { Grid } from '../common/Grid';
   styleUrls: ['./mine-sweepers.component.css']
 })
 export class MineSweepersComponent implements OnInit {
-
-  public block_state = state;
-  public flag_clicked = false;
+  
   private blocks_open : number = 0;
   private blocks_to_win : number = 54;
+  private game_over = false;
+  public pop_up_message = this.game_over;
+  public block_state = state;
+  public flag_clicked = false;
   public level : Level = Level.Easy;
   public grid = new Grid(this.level);
   public flags: Flags = new Flags(this.level);
-
-  private message = {
+  
+  public message = {
     title : "",
     content : ""
   }
@@ -34,10 +36,6 @@ export class MineSweepersComponent implements OnInit {
     mine: "https://i.imgur.com/T0Kwk2T.png"
   }
 
-  private game_over = false;
-  public pop_up_message = this.game_over;
-
-  public click_event = new EventEmitter();
 
   constructor() {
 
