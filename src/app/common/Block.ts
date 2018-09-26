@@ -16,7 +16,7 @@ export class Block extends Location {
     this._state = state.unset;
   }
 
-  clicked() {
+  open() {
     this._state = state.open;
   }
 

@@ -45,7 +45,21 @@ export class MineSweepersComponent implements OnInit {
     this.flag_clicked = this.flag_clicked ? false : true ;
   }
   ngOnInit() {
-    document.oncontextmenu = () => { return false };
+
+    const getDivId= function(div){
+      return div.id
+    }
+
+    window.addEventListener("contextmenu", e =>{
+      e.preventDefault()
+    });
+    document.querySelector("#field").addEventListener("contextmenu", e => {
+      var div =  e.target
+      var id = getDivId(div)
+      var block = this.grid.getBlockById(id)
+      this.flagUsed(block)
+      return true;
+    })
   }
   setFlag(block){
     this.flags.FlagUsed();
@@ -56,11 +70,13 @@ export class MineSweepersComponent implements OnInit {
     block.state = state.question;
   }
 
-  rightClickCheck(event, block){
+  onClick(event, block){
     if( event.button == 2 || this.flag_clicked ){
       this.flagUsed(block)
-      this.flag_clicked = false;
-    } 
+      this.flagButton();
+    } else {
+      this.openBlock(block);
+    }
   }
 
   flagUsed(block) {
@@ -97,7 +113,7 @@ export class MineSweepersComponent implements OnInit {
       for (let j = 0; j <  this.grid.length; j++) {
         if(this.grid.getBlock(i,j).isMined && 
           (this.grid.getBlock(i,j).state != state.flagged && this.grid.getBlock(i,j).state != state.question)){
-          this.grid.getBlock(i,j).clicked();
+          this.grid.getBlock(i,j).open();
         }
       }
     }
@@ -119,31 +135,28 @@ export class MineSweepersComponent implements OnInit {
       this.revealBlocksNear(arr[i])      
     }
   }
-
   revealValid(i,j){
     return  this.grid.getBlock(i,j).state == state.flagged
       || this.grid.getBlock(i,j).state == state.question
       || this.grid.getBlock(i,j).state == state.open;
   }
-
   winCheck(){
     return this.blocks_open === this.blocks_to_win
   }
-
-  openBlock(block : Block){
-    block.clicked();
-    this.blocks_open++;
-    if(this.winCheck())this.WonGame();
-  }
-
   setBackgroundRed(block){
     let id = block.numsToId([block.horizontal, block.vertical])
     document.getElementById(id).style.backgroundColor = 'red'
   }
-
-  clicked(block) {
+  openBlock(block) {
+    if ( this.flag_clicked ){
+      return 
+    }
     if ( block.state == state.unset && !this.game_over) {
-      this.openBlock(block);
+      block.open();
+      this.blocks_open++;
+      if(this.winCheck()){ 
+        this.WonGame();
+      }
       if ( block.isMined ){
         this.setBackgroundRed(block);
         this.lostGame();

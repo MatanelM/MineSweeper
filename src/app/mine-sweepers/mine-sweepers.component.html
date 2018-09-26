@@ -27,8 +27,7 @@
           [class.flag]="block.state === block_state.flagged"
           [class.question]="block.state === block_state.question"
           [class.open]="block.state === block_state.open"
-          (click)="clicked(block)"
-          (mousedown)="rightClickCheck($event,block)" 
+          (click)="onClick($event,block)" 
           *ngFor="let block of grid.blocks">
         <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{block._nearby_mines}}</span>
         <img *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mine" />
