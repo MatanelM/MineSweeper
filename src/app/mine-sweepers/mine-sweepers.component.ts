@@ -151,7 +151,7 @@ export class MineSweepersComponent implements OnInit {
     if ( this.flag_clicked ){
       return 
     }
-    if ( block.state == state.unset && !this.game_over) {
+    if ( block.state == state.unset && !this.game_over ) {
       block.open();
       this.blocks_open++;
       if(this.winCheck()){ 
@@ -181,7 +181,7 @@ export class MineSweepersComponent implements OnInit {
     switch(num){
       case 0 : this.level = Level.Easy;this.blocks_to_win=54;break;
       case 1 : this.level = Level.Medium;this.blocks_to_win=124;break;
-      case 2 : this.level = Level.Hard;this.blocks_to_win=391;break;
+      case 2 : this.level = Level.Hard;this.blocks_to_win=206;break;
     }
     this.startNewGame();
   }
