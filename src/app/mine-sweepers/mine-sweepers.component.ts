@@ -83,7 +83,7 @@ export class MineSweepersComponent implements OnInit {
     if ( this.game_over ){
       return 
     }
-    if ( this.flags.amount == 0 && block.state != state.flagged ){
+    if ( this.flags.amount == 0 && block.state == state.unset  ){
       alert( "no more flags" );
       return 
     }
