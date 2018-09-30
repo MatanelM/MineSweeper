@@ -95,28 +95,29 @@ export class MineSweepersComponent implements OnInit {
     }
   }
 
+  endGame(){
+    this.game_over = true;
+    this.pop_up_message = this.game_over;
+  }
+
   WonGame(){
     this.message.title = "Congratulations!";
     this.message.content = "You Won!";
-    this.game_over = true;
-    this.pop_up_message = this.game_over;
+    this.endGame();
   }
 
   lostGame(){
     this.message.title = "Game Over";
     this.message.content = "You stepped on a mine!";
-    
-    this.game_over = true;
-    this.pop_up_message = this.game_over;
-
+    this.endGame();
     this.revealAllMines();
   }
   revealAllMines(){
     for (let i = 0; i < this.grid.length ; i++) {
       for (let j = 0; j <  this.grid.length; j++) {
-        if(this.grid.getBlock(i,j).isMined && 
-          (this.grid.getBlock(i,j).state != state.flagged && this.grid.getBlock(i,j).state != state.question)){
-          this.grid.getBlock(i,j).open();
+        let block = this.grid.getBlock(i,j);
+        if( block.isMined && block.state == state.unset ){
+            block.open();
         }
       }
     }
@@ -126,22 +127,29 @@ export class MineSweepersComponent implements OnInit {
 
     for (let i = block.horizontal - 1 ; i <= block.horizontal + 1 ; i++) {
       for (let j = block.vertical - 1 ; j <=  block.vertical + 1 ; j++) {
-        if(!this.grid.checkValidCoords(i,j)) continue;
-        if(block.horizontal == i && block.vertical == j) continue; 
-        if(this.revealValid(i,j)) continue;
-        this.openBlock(this.grid.getBlock(i,j));
-        if(this.grid.getBlock(i,j).nearbyMines == 0 ) arr.push(this.grid.getBlock(i,j));
+        if(!this.grid.checkValidCoords(i,j)) {
+          continue;
+        }
+        if(block.horizontal == i && block.vertical == j) {
+          continue; 
+        }
+        if(this.revealValid(i,j)) {
+          continue;
+        }
+        let nearbyBlock = this.grid.getBlock(i,j)
+        this.openBlock( nearbyBlock );
+        nearbyBlock.nearbyMines == 0 && arr.push( nearbyBlock );
       }
     }
-    
     for (let i = 0; i < arr.length; i++) {
       this.revealBlocksNear(arr[i])      
     }
   }
   revealValid(i,j){
-    return  this.grid.getBlock(i,j).state == state.flagged
-      || this.grid.getBlock(i,j).state == state.question
-      || this.grid.getBlock(i,j).state == state.open;
+    let block = this.grid.getBlock(i,j);
+    return  block.state == state.flagged
+      || block.state == state.question
+      || block.state == state.open;
   }
   winCheck(){
     return this.blocks_open === this.blocks_to_win

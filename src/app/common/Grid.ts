@@ -86,8 +86,9 @@ export class Grid{
         //3. if any, set on every block the number of the nearby mines
         for (let i = 0; i < length; i++) {
             for (let j = 0; j < length; j++) {
-                if(this.getBlock(i,j).isMined) continue;
-                this.setNearbyMinesCount(this.getBlock(i,j))
+                let block = this.getBlock(i,j);
+                if(block.isMined) continue;
+                this.setNearbyMinesCount(block)
             }
         }
     }
