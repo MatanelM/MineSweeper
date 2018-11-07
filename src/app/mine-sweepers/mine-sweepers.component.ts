@@ -49,7 +49,7 @@ export class MineSweepersComponent implements OnInit {
     const getDivId= function(div){
       return div.id
     }
-
+    /* ---------this set the right click mouse button to set a flag-------- */
     window.addEventListener("contextmenu", e =>{
       e.preventDefault()
     });
@@ -71,12 +71,13 @@ export class MineSweepersComponent implements OnInit {
   }
 
   onClick(event, block){
-    if( event.button == 2 || this.flag_clicked ){
+    if( this.flag_clicked ){
       this.flagUsed(block)
       this.flagButton();
-    } else {
-      this.openBlock(block);
-    }
+      return
+    } 
+    this.openBlock(block);
+    
   }
 
   flagUsed(block) {
@@ -159,9 +160,6 @@ export class MineSweepersComponent implements OnInit {
     document.getElementById(id).style.backgroundColor = 'red'
   }
   openBlock(block) {
-    if ( this.flag_clicked ){
-      return 
-    }
     if ( block.state == state.unset && !this.game_over ) {
       block.open();
       this.blocks_open++;
@@ -171,7 +169,7 @@ export class MineSweepersComponent implements OnInit {
       if ( block.isMined ){
         this.setBackgroundRed(block);
         this.lostGame();
-      }else if(block.nearbyMines == 0){
+      }else if( block.nearbyMines == 0 ){
         this.revealBlocksNear(block);
       }
     }  
@@ -185,7 +183,6 @@ export class MineSweepersComponent implements OnInit {
     this.blocks_open = 0;
     this.flags = new Flags(this.level);
     this.grid = new Grid(this.level);
-
   }
   setNewLevel(num){
     
