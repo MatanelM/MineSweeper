@@ -61,6 +61,16 @@ export class MineSweepersComponent implements OnInit {
       return true;
     })
   }
+
+  isOpen(block){
+    return block.state === this.block_state.open;
+  }
+  isQuestion(block){
+    return block.state === this.block_state.question;
+  }
+  isFlagged(block){
+    return block.state === this.block_state.flagged;
+  }
   setFlag(block){
     this.flags.FlagUsed();
     block.state = state.flagged;
@@ -148,9 +158,9 @@ export class MineSweepersComponent implements OnInit {
   }
   revealValid(i,j){
     let block = this.grid.getBlock(i,j);
-    return  block.state == state.flagged
-      || block.state == state.question
-      || block.state == state.open;
+    return  this.isFlagged(block)
+      || this.isQuestion(block)
+      || this.isOpen(block);
   }
   winCheck(){
     return this.blocks_open === this.blocks_to_win
@@ -165,10 +175,12 @@ export class MineSweepersComponent implements OnInit {
       this.blocks_open++;
       if(this.winCheck()){ 
         this.WonGame();
+        return
       }
       if ( block.isMined ){
         this.setBackgroundRed(block);
         this.lostGame();
+        return
       }else if( block.nearbyMines == 0 ){
         this.revealBlocksNear(block);
       }
@@ -185,7 +197,6 @@ export class MineSweepersComponent implements OnInit {
     this.grid = new Grid(this.level);
   }
   setNewLevel(num){
-    
     switch(num){
       case 0 : this.level = Level.Easy;this.blocks_to_win=54;break;
       case 1 : this.level = Level.Medium;this.blocks_to_win=124;break;

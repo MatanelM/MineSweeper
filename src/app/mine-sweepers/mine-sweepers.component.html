@@ -7,6 +7,7 @@
     <h3>
       flags : {{ flags.amount }} 
     </h3>
+    <div class="smiley"></div>
     <div class="flag-button" [class.active]="flag_clicked" (click)="flagButton()"></div>
   </div>
   <div class="new-game">
@@ -14,27 +15,41 @@
     <button (click)="setNewLevel(1)">New Medium Game</button>
     <button (click)="setNewLevel(2)">New Hard Game</button>
   </div>
-</div>
+</div><!-- header menu -->
+
 <div class="bordered-out">
   <div class="bordered-in">
     <div id="field" 
-    [class.easy]="level === 0"
-    [class.medium]="level === 1"
-    [class.hard]="level === 2"
-    >
-      <div [attr.id]="block.id"
-          class="block" 
-          [class.flag]="block.state === block_state.flagged"
-          [class.question]="block.state === block_state.question"
-          [class.open]="block.state === block_state.open"
-          (click)="onClick($event,block)" 
-          *ngFor="let block of grid.blocks">
-        <span *ngIf="block.state == block_state.open && block._nearby_mines != 0" class="number">{{ block._nearby_mines }}</span>
-        <img  *ngIf="block.state == block_state.open && block.isMined" [src]="imgs.mine" class="mine" />
-      </div>
+      [ngClass]="{
+        'easy': level === 0,
+        'medium': level === 1,
+        'hard': level === 2
+      }">
+      <div
+        *ngFor="let block of grid.blocks" 
+        [attr.id]="block.id"
+        class="block" 
+        [ngClass]="{
+            'flag': isFlagged(block), 
+            'question': isQuestion(block), 
+            'open': isOpen(block) 
+          }" 
+        (click)="onClick($event,block)" >
+        <div *ngIf="isOpen(block)">
+          <span 
+            *ngIf="block._nearby_mines != 0" 
+            class="number">
+            {{ block._nearby_mines }}
+          </span>
+          <img 
+            *ngIf="block.isMined" 
+            [src]="imgs.mine" 
+            class="mine" />
+        </div>
+      </div><!-- block -->
     </div>
   </div>
-</div>
+</div><!-- Mine Sweepers game -->
 
 <div id="game_over" *ngIf="pop_up_message" class="pop-up">
   <div class="message-header">
@@ -48,4 +63,4 @@
     <button type="button" (click)="closeMessageButton()">Ok</button>
     <button type="button" (click)="startNewGame()">New Game</button>
   </div>
-</div>
+</div><!-- pop up message-->
